@@ -1,0 +1,13 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "org.loopmc.uifix.mixin",
+  "compatibilityLevel": "JAVA_8",
+  "client": [
+    "OptionsScreenMixin",
+    "OptionsScreenAccessor"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}

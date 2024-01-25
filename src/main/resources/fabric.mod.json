@@ -1,0 +1,29 @@
+{
+  "schemaVersion": 1,
+  "id": "uifix",
+  "version": "${version}",
+  "name": "Loop UI Fix",
+  "description": "Fixes some UI parts.",
+  "authors": [
+    "TheClashFruit"
+  ],
+  "contact": {
+    "homepage": "https://loopmc.org",
+    "sources": "https://github.com/TheLoopProject/LoopUIFix"
+  },
+  "license": "MIT",
+  "icon": "assets/uifix/icon.png",
+  "environment": "client",
+  "entrypoints": {
+    "client-init": [
+      "org.loopmc.uifix.LoopUIFix"
+    ]
+  },
+  "mixins": [
+    "uifix.mixins.json"
+  ],
+  "depends": {
+    "fabricloader": ">=${loader_version}",
+    "minecraft": "${minecraft_version}"
+  }
+}
