@@ -1,26 +1,28 @@
 {
   "schemaVersion": 1,
-  "id": "uifix",
+  "id": "keys",
   "version": "${version}",
-  "name": "Loop UI Fix",
-  "description": "Fixes some UI parts.",
+  "name": "Loop Keys",
+  "description": "A simple mod which adds better Keybinds to legacy Minecraft.",
   "authors": [
+    "Loop",
+    "Blurryface",
     "TheClashFruit"
   ],
   "contact": {
     "homepage": "https://loopmc.org",
-    "sources": "https://github.com/TheLoopProject/LoopUIFix"
+    "sources": "https://github.com/TheLoopProject/loop-keys"
   },
   "license": "MIT",
-  "icon": "assets/uifix/icon.png",
+  "icon": "assets/keys/icon.png",
   "environment": "client",
   "entrypoints": {
     "client-init": [
-      "org.loopmc.uifix.LoopUIFix"
+      "org.loopmc.keys.LoopKeys"
     ]
   },
   "mixins": [
-    "uifix.mixins.json"
+    "keys.mixins.json"
   ],
   "depends": {
     "fabricloader": ">=${loader_version}",

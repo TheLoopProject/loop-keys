@@ -1,4 +1,4 @@
-package org.loopmc.uifix.mixin;
+package org.loopmc.keys.mixin;
 
 import net.minecraft.client.gui.screen.options.OptionsScreen;
 import net.minecraft.client.options.GameOptions;

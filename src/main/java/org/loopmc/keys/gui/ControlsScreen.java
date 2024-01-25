@@ -1,4 +1,4 @@
-package org.loopmc.uifix.gui;
+package org.loopmc.keys.gui;
 
 import com.mojang.blaze3d.vertex.BufferBuilder;
 import net.minecraft.client.gui.screen.Screen;
