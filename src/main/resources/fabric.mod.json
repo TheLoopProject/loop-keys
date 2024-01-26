@@ -6,15 +6,16 @@
   "description": "A simple mod which adds better Keybinds to legacy Minecraft.",
   "authors": [
     "Loop",
+    "TheClashFruit",
     "Blurryface",
-    "TheClashFruit"
+    "WorldWidePixel"
   ],
   "contact": {
     "homepage": "https://loopmc.org",
     "sources": "https://github.com/TheLoopProject/loop-keys"
   },
   "license": "MIT",
-  "icon": "assets/keys/icon.png",
+  "icon": "assets/icon.png",
   "environment": "client",
   "entrypoints": {
     "client-init": [
