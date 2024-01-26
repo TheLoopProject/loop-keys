@@ -4,7 +4,7 @@ plugins {
     id 'ploceus' version '1.5-SNAPSHOT'
 }
 
-version = "${project.mod_version}+mc${project.minecraft_version}"
+version = "${project.mod_version}"/*+mc${project.minecraft_version}*/
 group = project.maven_group
 
 repositories {
