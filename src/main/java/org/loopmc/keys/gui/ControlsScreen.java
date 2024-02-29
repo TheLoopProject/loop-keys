@@ -6,9 +6,13 @@ import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.client.gui.widget.ListWidget;
 import net.minecraft.client.options.GameOptions;
 import net.minecraft.client.options.KeyBinding;
+import net.minecraft.client.resource.language.I18n;
 import net.minecraft.locale.LanguageManager;
+import org.loopmc.keys.ResettingKeyBinding;
+import org.lwjgl.input.Keyboard;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 
 public class ControlsScreen extends Screen {
     private final Screen parentScreen;
@@ -16,6 +20,7 @@ public class ControlsScreen extends Screen {
     private String title;
     private KeysListWidget keysListWidget;
     private final ArrayList<ButtonWidget> keyButtons = new ArrayList<>();
+    private final LinkedList<ResetButtonWidget> resetButtons = new LinkedList<>();
     private int selectedKey = -1;
 
     public ControlsScreen(Screen screen, GameOptions gameOptions) {
@@ -23,6 +28,7 @@ public class ControlsScreen extends Screen {
         this.gameOptions = gameOptions;
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public void init() {
         LanguageManager languageManager = LanguageManager.getInstance();
@@ -34,16 +40,20 @@ public class ControlsScreen extends Screen {
         this.buttons.add(new ButtonWidget(100, this.width / 2 - 100, this.height - 28, languageManager.translate("gui.done")));
 
         for (int i = 0; i < this.gameOptions.keyBindings.length; i++) {
-            this.keyButtons.add(new ButtonWidget(200 + i, 0, 0, 100, 20, this.gameOptions.getOptionName(i)));
+            ButtonWidget key = new ButtonWidget(200 + i, 0, 0, 75, 20, this.gameOptions.getOptionName(i));
+            this.keyButtons.add(key);
+            this.resetButtons.add(new ResetButtonWidget(0, 0, 50, 20, gameOptions.keyBindings[i]));
         }
     }
 
     @Override
     protected void mouseClicked(int mouseX, int mouseY, int mouseButton) {
+        System.out.println(mouseButton);
         if (this.selectedKey >= 0) {
             this.gameOptions.setKeyBinding(this.selectedKey, -100 + mouseButton);
 
             this.keyButtons.get(this.selectedKey).message = this.gameOptions.getOptionName(this.selectedKey);
+            System.out.println("Clicked: "+mouseButton+" Button: "+keyButtons.get(selectedKey).message);
 
             this.selectedKey = -1;
 
@@ -53,13 +63,30 @@ public class ControlsScreen extends Screen {
         }
 
         if (mouseButton == 0) {
-            for (ButtonWidget btn : this.keyButtons) {
-                if (btn.isMouseOver(this.minecraft, mouseX, mouseY)) {
-                    this.minecraft.soundSystem.play("random.click", 1.0F, 1.0F);
+			for (int i = 0, size = keyButtons.size(); i < size; i++) {
+				ButtonWidget btn = keyButtons.get(i);
+				if (btn.isMouseOver(this.minecraft, mouseX, mouseY)) {
+					this.minecraft.soundSystem.play("random.click", 1.0F, 1.0F);
 
-                    this.buttonClicked(btn);
+					this.buttonClicked(btn);
+                    break;
+				} else {
+                    ResetButtonWidget reset = resetButtons.get(i);
+                    if (reset.isMouseOver(minecraft, mouseX, mouseY)){
+                        this.minecraft.soundSystem.play("random.click", 1.0F, 1.0F);
+
+                        reset.reset();
+                        btn.message = this.gameOptions.getOptionName(btn.id - 200);
+
+                        if (selectedKey != -1){
+                            ButtonWidget selected = keyButtons.get(selectedKey);
+                            selected.message = this.gameOptions.getOptionName(selected.id - 200);
+                        }
+                        selectedKey = -1;
+                        break;
+                    }
                 }
-            }
+			}
         }
 
         super.mouseClicked(mouseX, mouseY, mouseButton);
@@ -68,7 +95,12 @@ public class ControlsScreen extends Screen {
     @Override
     protected void keyPressed(char chr, int key) {
         if (this.selectedKey >= 0) {
-            this.gameOptions.setKeyBinding(this.selectedKey, key);
+
+            if (key == Keyboard.KEY_ESCAPE){
+                this.gameOptions.setKeyBinding(this.selectedKey, Keyboard.KEY_NONE);
+            } else {
+                this.gameOptions.setKeyBinding(this.selectedKey, key);
+            }
 
             this.keyButtons.get(this.selectedKey).message = this.gameOptions.getOptionName(this.selectedKey);
 
@@ -127,6 +159,11 @@ public class ControlsScreen extends Screen {
         }
 
         @Override
+        protected int getScrollbarPosition() {
+            return super.getScrollbarPosition()+12;
+        }
+
+        @Override
         protected boolean isEntrySelected(int index) {
             return false;
         }
@@ -150,11 +187,32 @@ public class ControlsScreen extends Screen {
             btn.y = k;
 
             btn.render(ControlsScreen.this.minecraft, mouseX, mouseY);
+
+            ButtonWidget reset = ControlsScreen.this.resetButtons.get(i);
+
+            reset.x = btn.x + 75;
+            reset.y = k;
+
+            reset.render(minecraft, mouseX, mouseY);
         }
 
         @Override
         public void buttonClicked(ButtonWidget btn) {
             System.out.println(btn.id);
         }
+    }
+
+    static class ResetButtonWidget extends ButtonWidget {
+
+        private final KeyBinding binding;
+        public ResetButtonWidget(int x, int y, int width, int height, KeyBinding key) {
+            super(9999, x, y, width, height, I18n.translate("gui.reset"));
+            this.binding = key;
+        }
+
+        public void reset(){
+            ((ResettingKeyBinding)binding).reset();
+        }
+
     }
 }
