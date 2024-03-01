@@ -7,7 +7,6 @@ import net.minecraft.client.gui.widget.ListWidget;
 import net.minecraft.client.options.GameOptions;
 import net.minecraft.client.options.KeyBinding;
 import net.minecraft.client.resource.language.I18n;
-import net.minecraft.locale.LanguageManager;
 import org.loopmc.keys.ResettingKeyBinding;
 import org.lwjgl.input.Keyboard;
 
@@ -31,13 +30,11 @@ public class ControlsScreen extends Screen {
     @SuppressWarnings("unchecked")
     @Override
     public void init() {
-        LanguageManager languageManager = LanguageManager.getInstance();
-
-        this.title = languageManager.translate("controls.title");
+        this.title = I18n.translate("controls.title");
 
         this.keysListWidget = new ControlsScreen.KeysListWidget();
 
-        this.buttons.add(new ButtonWidget(100, this.width / 2 - 100, this.height - 28, languageManager.translate("gui.done")));
+        this.buttons.add(new ButtonWidget(100, this.width / 2 - 100, this.height - 28, I18n.translate("gui.done")));
 
         for (int i = 0; i < this.gameOptions.keyBindings.length; i++) {
             ButtonWidget key = new ButtonWidget(200 + i, 0, 0, 75, 20, this.gameOptions.getOptionName(i));
@@ -174,9 +171,7 @@ public class ControlsScreen extends Screen {
         protected void renderEntry(int i, int j, int k, int l, BufferBuilder tesselator) {
             final KeyBinding keyBinding = ControlsScreen.this.gameOptions.keyBindings[i];
 
-            LanguageManager languageManager = LanguageManager.getInstance();
-
-            ControlsScreen.this.drawString(ControlsScreen.this.textRenderer, languageManager.translate(keyBinding.name), j, k + (textRenderer.fontHeight - 2), 16777215);
+            ControlsScreen.this.drawString(ControlsScreen.this.textRenderer, I18n.translate(keyBinding.name), j, k + (textRenderer.fontHeight - 2), 16777215);
 
             ButtonWidget btn = ControlsScreen.this.keyButtons.get(i);
 

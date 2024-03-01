@@ -3,14 +3,19 @@ package org.loopmc.keys.mixin;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.screen.options.OptionsScreen;
 import net.minecraft.client.gui.widget.ButtonWidget;
+import net.minecraft.client.options.GameOptions;
 import org.loopmc.keys.gui.ControlsScreen;
+import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(OptionsScreen.class)
 public abstract class OptionsScreenMixin extends Screen {
+    @Shadow @Final private GameOptions options;
+
     @Inject(
         at = @At(
             value = "INVOKE",
@@ -20,7 +25,7 @@ public abstract class OptionsScreenMixin extends Screen {
         cancellable = true
     )
     public void buttonClicked(ButtonWidget btn, CallbackInfo ci) {
-        this.minecraft.openScreen(new ControlsScreen(this, ((OptionsScreenAccessor) this).getOptions()));
+        this.minecraft.openScreen(new ControlsScreen(this, options));
 
         ci.cancel();
     }
