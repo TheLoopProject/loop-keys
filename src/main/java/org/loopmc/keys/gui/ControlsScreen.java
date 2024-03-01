@@ -48,12 +48,10 @@ public class ControlsScreen extends Screen {
 
     @Override
     protected void mouseClicked(int mouseX, int mouseY, int mouseButton) {
-        System.out.println(mouseButton);
         if (this.selectedKey >= 0) {
             this.gameOptions.setKeyBinding(this.selectedKey, -100 + mouseButton);
 
             this.keyButtons.get(this.selectedKey).message = this.gameOptions.getOptionName(this.selectedKey);
-            System.out.println("Clicked: "+mouseButton+" Button: "+keyButtons.get(selectedKey).message);
 
             this.selectedKey = -1;
 
@@ -114,7 +112,6 @@ public class ControlsScreen extends Screen {
 
     @Override
     protected void buttonClicked(ButtonWidget btn) {
-        System.out.println(btn.id);
 
         if (btn.active) {
             if (btn.id == 100) {

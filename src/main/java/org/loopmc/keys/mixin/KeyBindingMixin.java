@@ -3,7 +3,6 @@ package org.loopmc.keys.mixin;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.options.KeyBinding;
 import org.loopmc.keys.ResettingKeyBinding;
-import org.lwjgl.input.Mouse;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
@@ -33,10 +32,5 @@ public abstract class KeyBindingMixin implements ResettingKeyBinding {
 		keyCode = defaultKeyCode;
 		Minecraft.getInstance().options.save();
 		resetMapping();
-	}
-
-	@Inject(method = "set", at = @At("HEAD"))
-	private static void printKey(int keyCode, boolean pressed, CallbackInfo ci){
-		System.out.println("Pressed: " + keyCode + " State: " + pressed + " Mouse: " + Mouse.getEventButton());
 	}
 }
