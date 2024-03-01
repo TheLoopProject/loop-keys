@@ -10,7 +10,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(OptionsScreen.class)
-public class OptionsScreenMixin extends Screen {
+public abstract class OptionsScreenMixin extends Screen {
     @Inject(
         at = @At(
             value = "INVOKE",
@@ -20,7 +20,6 @@ public class OptionsScreenMixin extends Screen {
         cancellable = true
     )
     public void buttonClicked(ButtonWidget btn, CallbackInfo ci) {
-        this.minecraft.options.save();
         this.minecraft.openScreen(new ControlsScreen(this, ((OptionsScreenAccessor) this).getOptions()));
 
         ci.cancel();
